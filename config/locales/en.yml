@@ -23,7 +23,6 @@ en:
         legend: "Edit Feature %{name}"
       feature:
         edit: 'Edit'
-      feature:
         delete: 'Delete'
       show:
         title: "Feature %{name}"
