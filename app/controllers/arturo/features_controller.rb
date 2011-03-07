@@ -40,7 +40,7 @@ module Arturo
       else
         flash[:success] = t('arturo.features.flash.updated_many', :count => updated_count)
       end
-      redirect_to features_path
+      redirect_to arturo_features_path
     end
 
     def show
@@ -56,7 +56,7 @@ module Arturo
       @feature = Arturo::Feature.new(params[:feature])
       if @feature.save
         flash[:notice] = t('arturo.features.flash.created', :name => @feature.to_s)
-        redirect_to features_path
+        redirect_to arturo_features_path
       else
         flash[:alert] = t('arturo.features.flash.error_creating', :name => @feature.to_s)
         render :action => 'new'
@@ -70,7 +70,7 @@ module Arturo
     def update
       if @feature.update_attributes(params[:feature])
         flash[:notice] = t('arturo.features.flash.updated', :name => @feature.to_s)
-        redirect_to features_path
+        redirect_to arturo_features_path
       else
           flash[:alert] = t('arturo.features.flash.error_updating', :name => @feature.to_s)
         render :action => 'edit'
@@ -83,7 +83,7 @@ module Arturo
       else
         flash[:alert] = t('arturo.features.flash.error_removing', :name => @feature.to_s)
       end
-      redirect_to features_path
+      redirect_to arturo_features_path
     end
 
     protected
