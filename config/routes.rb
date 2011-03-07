@@ -4,8 +4,10 @@
 
 # TODO replace this with the commented-out version below
 Rails.application.routes.draw do
-  resources :features, :controller => 'arturo/features'
-  put 'features', :to => 'arturo/features#update_all', :as => 'features'
+  namespace :arturo do
+    resources :features
+    put 'features', :to => 'features#update_all', :as => 'features'
+  end
 end
 
 # Arturo::Engine.routes.draw do
