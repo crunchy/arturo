@@ -1,12 +1,5 @@
 .bundle
 arturo*.gem
 tags
-.idea/.name
-.idea/.rakeTasks
-.idea/arturo.iml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
-lib/.DS_Store
+.idea
+*.DS_Store
