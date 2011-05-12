@@ -57,7 +57,7 @@ class ArturoFeaturesControllerAdminTest < ActionController::TestCase
 
   def test_put_update
     put :update, :id => @features.first.id, :feature => { :deployment_percentage => '2' }
-    assert_redirected_to arturo_feature_path(@features.first.reload)
+    assert_redirected_to arturo_features_path
   end
 
   def test_delete_destroy
