@@ -5,11 +5,11 @@ require 'active_record'
 module Arturo
   class Feature < ::ActiveRecord::Base
 
-    include Arturo::SpecialHandling, Arturo::DefaultHandling
-    
+    include Arturo::SpecialHandling
+    self.inheritance_column = 'class_name'
 
     Arturo::Feature::SYMBOL_REGEX = /^[a-zA-z][a-zA-Z0-9_]*$/
-    DEFAULT_ATTRIBUTES = { :deployment_percentage => 0 }.with_indifferent_access
+    DEFAULT_ATTRIBUTES = { :deployment_percentage => 0, :class_name => "Arturo::Feature" }.with_indifferent_access
 
     attr_readonly :symbol
 
@@ -34,15 +34,6 @@ module Arturo
       super(DEFAULT_ATTRIBUTES.merge(attributes || {}), options, &block)
     end
 
-    # @param [Object] feature_recipient a User, Account,
-    #                 or other model with an #id method
-    # @return [true,false] whether or not this feature is enabled
-    #                      for feature_recipient
-    def enabled_for?(feature_recipient)
-      return false if feature_recipient.nil?
-      _enabled_for? feature_recipient
-    end
-
     def name
       return I18n.translate("arturo.feature.nameless") if symbol.blank?
       I18n.translate("arturo.feature.#{symbol}", :default => symbol.to_s.titleize)
@@ -54,6 +45,19 @@ module Arturo
 
     def to_param
       persisted? ? "#{id}-#{symbol.to_s.parameterize}" : nil
+    end
+
+    # @param [Object] feature_recipient a User, Account,
+    #                 or other model with an #id method
+    # @return [true,false] whether or not this feature is enabled
+    #                      for feature_recipient
+    # @see Arturo::SpecialHandling#whitelisted?
+    # @see Arturo::SpecialHandling#blacklisted?
+    def enabled_for?(feature_recipient)
+      return false if feature_recipient.nil?
+      return false if blacklisted?(feature_recipient)
+      return true if  whitelisted?(feature_recipient)
+      passes_threshold?(feature_recipient)
     end
 
     def inspect
