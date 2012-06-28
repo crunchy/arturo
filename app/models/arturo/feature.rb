@@ -5,7 +5,7 @@ require 'active_record'
 module Arturo
   class Feature < ::ActiveRecord::Base
 
-    include Arturo::SpecialHandling
+    include Arturo::SpecialHandling, Arturo::DefaultHandling
     self.inheritance_column = 'class_name'
 
     Arturo::Feature::SYMBOL_REGEX = /^[a-zA-z][a-zA-Z0-9_]*$/
@@ -55,9 +55,7 @@ module Arturo
     # @see Arturo::SpecialHandling#blacklisted?
     def enabled_for?(feature_recipient)
       return false if feature_recipient.nil?
-      return false if blacklisted?(feature_recipient)
-      return true if  whitelisted?(feature_recipient)
-      passes_threshold?(feature_recipient)
+      _enabled_for? feature_recipient
     end
 
     def inspect

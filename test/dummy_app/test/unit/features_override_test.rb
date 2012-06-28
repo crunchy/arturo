@@ -17,7 +17,7 @@ class ArturoFeaturesOverrideTest < ActiveSupport::TestCase
     feature_recipient.stubs(:id).returns
     feature_recipient.stubs(:owns_monkey?).returns(true)
     assert feature.enabled_for? feature_recipient
-    
+
     feature_recipient.stubs(:owns_monkey?).returns(false)
     assert !feature.enabled_for?(feature_recipient)
   end
